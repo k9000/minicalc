@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	double buf = 0;
-	double result = 0;
-	char calc = 1;
-	int dig = 0;
+	double buf = 0;		//バッファ
+	double result = 0;	//計算結果
+	char calc = 1;		//四則演算の符号用
+	int dig = 0;		//小数点以下の桁数保持用
 	TextView text;
 	
 	@Override
@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	/*	数字ボタン定義 */
 	public void clickButton_AC(View v){
 		result = 0;
 		buf = 0;
@@ -43,11 +44,11 @@ public class MainActivity extends Activity {
 	}
 	
 	public void clickButton0(View v){
-		if(dig!=0){
+		if(dig!=0){						//小数点計算
 			dig = dig * 10;
 			buf = buf + (0/(double)dig);
 		}
-		else buf = buf * 10 + 0;
+		else buf = buf * 10 + 0;		//実数計算
 		text.setText(String.valueOf(buf));
 	}
 	
@@ -133,11 +134,11 @@ public class MainActivity extends Activity {
 	}
 	
 	public void clickButton_dot(View v){
-		if(dig!=0){}
-		else dig = 1;
+		if(dig==0)dig = 1;
 		text.setText(String.valueOf(buf));
 	}
 	
+	/* 演算ボタン定義 */
 	public void clickButton_add(View v){
 		result = calc(calc,buf,result);
 		calc = 1;
@@ -178,6 +179,7 @@ public class MainActivity extends Activity {
 		text.setText(String.valueOf(result));
 	}
 	
+	/* 四則演算 */
 	private double calc(char a,double b,double c) {
 		double d = 0;
 
