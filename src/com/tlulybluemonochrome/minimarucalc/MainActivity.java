@@ -11,7 +11,7 @@ public class MainActivity extends Activity {
 	double buf = 0;
 	double result = 0;
 	char calc = 1;
-	boolean dot = false;
+	int dig = 0;
 	TextView text;
 	
 	@Override
@@ -31,67 +31,110 @@ public class MainActivity extends Activity {
 	public void clickButton_AC(View v){
 		result = 0;
 		buf = 0;
+		dig = 0;
 		calc = 1;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton_C(View v){
 		buf = 0;
+		dig = 0;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton0(View v){
-		buf = buf * 10 + 0;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (0/(double)dig);
+		}
+		else buf = buf * 10 + 0;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton1(View v){
-		buf = buf * 10 + 1;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (1/(double)dig);
+		}
+		else buf = buf * 10 + 1;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton2(View v){
-		buf = buf * 10 + 2;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (2/(double)dig);
+		}
+		else buf = buf * 10 + 2;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton3(View v){
-		buf = buf * 10 + 3;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (3/(double)dig);
+		}
+		else buf = buf * 10 + 3;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton4(View v){
-		buf = buf * 10 + 4;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (4/(double)dig);
+		}
+		else buf = buf * 10 + 4;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton5(View v){
-		buf = buf * 10 + 5;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (5/(double)dig);
+		}
+		else buf = buf * 10 + 5;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton6(View v){
-		buf = buf * 10 + 6;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (6/(double)dig);
+		}
+		else buf = buf * 10 + 6;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton7(View v){
-		buf = buf * 10 + 7;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (7/(double)dig);
+		}
+		else buf = buf * 10 + 7;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton8(View v){
-		buf = buf * 10 + 8;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (8/(double)dig);
+		}
+		else buf = buf * 10 + 8;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton9(View v){
-		buf = buf * 10 + 9;
+		if(dig!=0){
+			dig = dig * 10;
+			buf = buf + (9/(double)dig);
+		}
+		else buf = buf * 10 + 9;
 		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton_dot(View v){
-		dot = true;
+		if(dig!=0){}
+		else dig = 1;
 		text.setText(String.valueOf(buf));
 	}
 	
@@ -99,6 +142,7 @@ public class MainActivity extends Activity {
 		result = calc(calc,buf,result);
 		calc = 1;
 		buf = 0;
+		dig = 0;
 		text.setText(String.valueOf(result));
 	}
 	
@@ -107,6 +151,7 @@ public class MainActivity extends Activity {
 		result = calc(calc,buf,result);
 		calc = 2;
 		buf = 0;
+		dig = 0;
 		text.setText(String.valueOf(result));
 	}
 	
@@ -114,6 +159,7 @@ public class MainActivity extends Activity {
 		result = calc(calc,buf,result);
 		calc = 3;
 		buf = 0;
+		dig = 0;
 		text.setText(String.valueOf(result));
 	}
 
@@ -121,12 +167,14 @@ public class MainActivity extends Activity {
 		result = calc(calc,buf,result);
 		calc = 4;
 		buf = 0;
+		dig = 0;
 		text.setText(String.valueOf(result));
 	}
 	
 	public void clickButton_equal(View v){
 		result = calc(calc,buf,result);
 		buf = 0;
+		dig = 0;
 		text.setText(String.valueOf(result));
 	}
 	
