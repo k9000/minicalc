@@ -25,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10" />
-    
 
 
     <TableLayout
@@ -33,6 +32,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
+        <TableRow
+            android:id="@+id/tableRow0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/button_AC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clickButton_AC"
+                android:text="AC"/>
+                        
+            <Button
+                android:id="@+id/button_C"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clickButton_C"
+                android:text="C" />
+            
+        </TableRow>
+        
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"

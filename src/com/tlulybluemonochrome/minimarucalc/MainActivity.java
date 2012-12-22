@@ -11,6 +11,7 @@ public class MainActivity extends Activity {
 	double buf = 0;
 	double result = 0;
 	char calc = 1;
+	boolean dot = false;
 	TextView text;
 	
 	@Override
@@ -25,6 +26,18 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+	
+	public void clickButton_AC(View v){
+		result = 0;
+		buf = 0;
+		calc = 1;
+		text.setText(String.valueOf(buf));
+	}
+	
+	public void clickButton_C(View v){
+		buf = 0;
+		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton0(View v){
@@ -78,7 +91,8 @@ public class MainActivity extends Activity {
 	}
 	
 	public void clickButton_dot(View v){
-
+		dot = true;
+		text.setText(String.valueOf(buf));
 	}
 	
 	public void clickButton_add(View v){
@@ -88,7 +102,6 @@ public class MainActivity extends Activity {
 		text.setText(String.valueOf(result));
 	}
 	
-
 
 	public void clickButton_sub(View v){
 		result = calc(calc,buf,result);
@@ -104,7 +117,7 @@ public class MainActivity extends Activity {
 		text.setText(String.valueOf(result));
 	}
 
-	public void clickButton_dev(View v){
+	public void clickButton_div(View v){
 		result = calc(calc,buf,result);
 		calc = 4;
 		buf = 0;
@@ -120,10 +133,10 @@ public class MainActivity extends Activity {
 	private double calc(char a,double b,double c) {
 		double d = 0;
 
-		if(a==1)d = b + c;
-		else if(a==2)d = b -c;
-		else if(a==3)d = b * c;
-		else if(a==4)d = b / c;
+		if(a==1)d = c + b;
+		else if(a==2)d = c - b;
+		else if(a==3)d = c * b;
+		else if(a==4)d = c / b;
 
 		return d;
 	}
