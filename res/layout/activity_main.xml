@@ -1,36 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello marucalc" />
 
         <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView1"
         android:layout_marginRight="29dp"
-        android:layout_toLeftOf="@+id/textView1"
         android:src="@drawable/ic_launcher" />
     
     <EditText
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10" />
-
+        android:ems="10"
+        android:gravity="right"
+        android:text="@string/hello_world" />
 
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
 
         <TableRow
             android:id="@+id/tableRow0"
