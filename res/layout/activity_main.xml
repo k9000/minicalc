@@ -83,7 +83,7 @@
                 android:id="@+id/button_div"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clickButton_div"
+                android:onClick="clickButton_calc"
                 android:text="÷" />
         </TableRow>
 
@@ -117,7 +117,7 @@
                 android:id="@+id/button_mul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clickButton_mul"
+                android:onClick="clickButton_calc"
                 android:text="×" />
         </TableRow>
 
@@ -151,7 +151,7 @@
                 android:id="@+id/button_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clickButton_sub"
+                android:onClick="clickButton_calc"
                 android:text="-" />
         </TableRow>
 
@@ -178,14 +178,14 @@
                 android:id="@+id/button_equal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clickButton_equal"
+                android:onClick="clickButton_calc"
                 android:text="=" />
 
             <Button
                 android:id="@+id/button_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clickButton_add"
+                android:onClick="clickButton_calc"
                 android:text="+" />
         </TableRow>
     </TableLayout>

@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	double buf = 0;		//ƒoƒbƒtƒ@
-	double result = 0;	//ŒvZŒ‹‰Ê
-	char calc = 1;		//l‘¥‰‰Z‚Ì•„†—p
-	int dig = 0;		//¬”“_ˆÈ‰º‚ÌŒ…”•Û—p
+	double buf = 0;		//ãƒãƒƒãƒ•ã‚¡
+	double result = 0;	//è¨ˆç®—çµæœ
+	char calc = 1;		//å››å‰‡æ¼”ç®—ã®ç¬¦å·ç”¨
+	int dig = 0;		//å°æ•°ç‚¹ä»¥ä¸‹ã®æ¡æ•°ä¿æŒç”¨
 	TextView text;
 	
 	@Override
@@ -29,8 +29,7 @@ public class MainActivity extends Activity {
 	}
 	
 	
-	/* ƒNƒŠƒA’è‹` */
-	
+	/* ã‚¯ãƒªã‚¢å®šç¾© */
 	public void clickButton_AC(View v){
 		result = 0;
 		buf = 0;
@@ -45,11 +44,10 @@ public class MainActivity extends Activity {
 		text.setText(String.valueOf(buf));
 	}
 	
-	/*	”šƒ{ƒ^ƒ“’è‹` */
-	
+	/*	æ•°å­—ãƒœã‚¿ãƒ³å®šç¾© */
 	public void clickButton_figure(View v){
 		int figure = 0;
-		// ƒNƒŠƒbƒN‚Ìˆ—
+		// ã‚¯ãƒªãƒƒã‚¯æ™‚ã®å‡¦ç†
 		switch( v.getId()){
 		case R.id.button1:
 			figure = 1;
@@ -83,70 +81,75 @@ public class MainActivity extends Activity {
 		break;
 		}
 		
-		if(dig!=0){						//¬”“_ŒvZ
+		if(dig!=0){						//å°æ•°ç‚¹è¨ˆç®—
 			dig = dig * 10;
 			buf = buf + ((double)figure/(double)dig);
 		}
-		else buf = buf * 10 + (double)figure;		//À”ŒvZ
+		else buf = buf * 10 + (double)figure;		//æ•´æ•°è¨ˆç®—
 		text.setText(String.valueOf(buf));
 	}
 	
 	
+	/* å°æ•°ç‚¹ãƒœã‚¿ãƒ³å®šç¾© */
 	public void clickButton_dot(View v){
 		if(dig==0)dig = 1;
 		text.setText(String.valueOf(buf));
 	}
 	
-	/* ‰‰Zƒ{ƒ^ƒ“’è‹` */
-	public void clickButton_add(View v){
-		result = calc(calc,buf,result);
-		calc = 1;
-		buf = 0;
-		dig = 0;
-		text.setText(String.valueOf(result));
+	/* æ¼”ç®—ãƒœã‚¿ãƒ³å®šç¾© */
+	public void clickButton_calc(View v){
+		// ã‚¯ãƒªãƒƒã‚¯æ™‚ã®å‡¦ç†
+		
+		//ä¿æŒã—ã¦ã‚‹æ¼”ç®—ç¬¦å·ã«å¾“ã£ã¦æ¼”ç®—
+		switch(calc){
+		case 1:
+			//åŠ ç®—
+			result = result + buf;
+			break;
+		case 2:
+			//æ¸›ç®—
+			result = result - buf;
+		break;
+		case 3:
+			//æ›ã‘ç®—
+			result = result * buf;
+		break;
+		case 4:
+			//å‰²ã‚Šç®—
+			result = result / buf;
+		break;
+		}
+		
+		buf = 0;//å…¥åŠ›ãƒªã‚»ãƒƒãƒˆ
+		dig = 0;//å°æ•°ç‚¹ãƒªã‚»ãƒƒãƒˆ
+		text.setText(String.valueOf(result));//çµæœè¡¨ç¤º
+		
+		//æ¼”ç®—ç¬¦å·ã®ä¿æŒ
+		switch( v.getId()){
+		case R.id.button_add:
+			//åŠ ç®—
+			calc = 1;
+			break;
+		case R.id.button_sub:
+			//æ¸›ç®—
+			calc = 2;
+		break;
+		case R.id.button_mul:
+			//æ›ã‘ç®—
+			calc = 3;
+		break;
+		case R.id.button_div:
+			//å‰²ã‚Šç®—
+			calc = 1;
+		break;
+		case R.id.button_equal:
+			//ã‚¤ã‚³ãƒ¼ãƒ«
+			result = 0;//ã¨ã‚Šã‚ãˆãšãƒªã‚»ãƒƒãƒˆ
+		break;
+		}
+		
+		
+
 	}
 	
-
-	public void clickButton_sub(View v){
-		result = calc(calc,buf,result);
-		calc = 2;
-		buf = 0;
-		dig = 0;
-		text.setText(String.valueOf(result));
-	}
-	
-	public void clickButton_mul(View v){
-		result = calc(calc,buf,result);
-		calc = 3;
-		buf = 0;
-		dig = 0;
-		text.setText(String.valueOf(result));
-	}
-
-	public void clickButton_div(View v){
-		result = calc(calc,buf,result);
-		calc = 4;
-		buf = 0;
-		dig = 0;
-		text.setText(String.valueOf(result));
-	}
-	
-	public void clickButton_equal(View v){
-		result = calc(calc,buf,result);
-		buf = 0;
-		dig = 0;
-		text.setText(String.valueOf(result));
-	}
-	
-	/* l‘¥‰‰Z */
-	private double calc(char a,double b,double c) {
-		double d = 0;
-
-		if(a==1)d = c + b;
-		else if(a==2)d = c - b;
-		else if(a==3)d = c * b;
-		else if(a==4)d = c / b;
-
-		return d;
-	}
 }
