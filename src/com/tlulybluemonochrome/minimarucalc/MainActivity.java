@@ -28,7 +28,9 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	/*	数字ボタン定義 */
+	
+	/* クリア定義 */
+	
 	public void clickButton_AC(View v){
 		result = 0;
 		buf = 0;
@@ -43,95 +45,52 @@ public class MainActivity extends Activity {
 		text.setText(String.valueOf(buf));
 	}
 	
-	public void clickButton0(View v){
+	/*	数字ボタン定義 */
+	
+	public void clickButton_figure(View v){
+		int figure = 0;
+		// クリック時の処理
+		switch( v.getId()){
+		case R.id.button1:
+			figure = 1;
+		break;
+		case R.id.button2:
+			figure = 2;
+		break;
+		case R.id.button3:
+			figure = 3;
+		break;
+		case R.id.button4:
+			figure = 4;
+		break;
+		case R.id.button5:
+			figure = 5;
+		break;
+		case R.id.button6:
+			figure = 6;
+		break;
+		case R.id.button7:
+			figure = 7;
+		break;
+		case R.id.button8:
+			figure = 8;
+		break;
+		case R.id.button9:
+			figure = 9;
+		break;
+		case R.id.button0:
+			figure = 10;
+		break;
+		}
+		
 		if(dig!=0){						//小数点計算
 			dig = dig * 10;
-			buf = buf + (0/(double)dig);
+			buf = buf + ((double)figure/(double)dig);
 		}
-		else buf = buf * 10 + 0;		//実数計算
+		else buf = buf * 10 + (double)figure;		//実数計算
 		text.setText(String.valueOf(buf));
 	}
 	
-	public void clickButton1(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (1/(double)dig);
-		}
-		else buf = buf * 10 + 1;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton2(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (2/(double)dig);
-		}
-		else buf = buf * 10 + 2;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton3(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (3/(double)dig);
-		}
-		else buf = buf * 10 + 3;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton4(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (4/(double)dig);
-		}
-		else buf = buf * 10 + 4;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton5(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (5/(double)dig);
-		}
-		else buf = buf * 10 + 5;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton6(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (6/(double)dig);
-		}
-		else buf = buf * 10 + 6;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton7(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (7/(double)dig);
-		}
-		else buf = buf * 10 + 7;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton8(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (8/(double)dig);
-		}
-		else buf = buf * 10 + 8;
-		text.setText(String.valueOf(buf));
-	}
-	
-	public void clickButton9(View v){
-		if(dig!=0){
-			dig = dig * 10;
-			buf = buf + (9/(double)dig);
-		}
-		else buf = buf * 10 + 9;
-		text.setText(String.valueOf(buf));
-	}
 	
 	public void clickButton_dot(View v){
 		if(dig==0)dig = 1;
