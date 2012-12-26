@@ -34,13 +34,13 @@ public class MainActivity extends Activity {
 		buf = 0;
 		dig = 0;
 		calc = 1;
-		text.setText(String.valueOf(buf));
+		setFigure(buf,text);
 	}
 
 	public void clickButton_C(View v) {
 		buf = 0;
 		dig = 0;
-		text.setText(String.valueOf(buf));
+		setFigure(buf,text);
 	}
 
 	/* 数字ボタン定義 */
@@ -85,14 +85,14 @@ public class MainActivity extends Activity {
 			buf = buf + ((double) figure / (double) dig);
 		} else
 			buf = buf * 10 + (double) figure; // 整数計算
-		text.setText(String.valueOf(buf));
+		setFigure(buf,text);
 	}
 
 	/* 小数点ボタン定義 */
 	public void clickButton_dot(View v) {
 		if (dig == 0)
 			dig = 1;
-		text.setText(String.valueOf(buf));
+		setFigure(buf,text);
 	}
 
 	/* 演算ボタン定義 */
@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
 
 		buf = 0;// 入力リセット
 		dig = 0;// 小数点リセット
-		text.setText(String.valueOf(result));// 結果表示
+		setFigure(result,text);// 結果表示
 
 		// 演算符号の保持
 		switch (v.getId()) {
@@ -147,6 +147,13 @@ public class MainActivity extends Activity {
 			break;
 		}
 
+	}
+
+	public void setFigure(double buf,TextView text) {
+		if (buf == (int) buf)
+			text.setText(String.valueOf((int) buf));
+		else
+			text.setText(String.valueOf(buf));
 	}
 
 }
