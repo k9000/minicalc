@@ -14,6 +14,8 @@ public class MainActivity extends Activity {
 	BigDecimal result = BigDecimal.valueOf(0); // 計算結果
 	char calc = 0; // 四則演算の符号用
 	int dig = 0; // 小数点以下の桁数保持用
+	boolean i = false; // 演算ボタン用フラグ
+	boolean error = false; // エラーフラグ
 	TextView text;
 
 	@Override
@@ -35,20 +37,23 @@ public class MainActivity extends Activity {
 		result = BigDecimal.valueOf(0);
 		buf = BigDecimal.valueOf(0);
 		dig = 0;
-		calc = 1;
+		calc = 0;
+		i = false;
+		error = false;
 		text.setText(buf.toPlainString());
 	}
 
 	public void clickButton_C(View v) {
 		buf = BigDecimal.valueOf(0);
-		;
 		dig = 0;
+		calc = 0;
 		text.setText(buf.toPlainString());
 	}
 
 	/* 数字ボタン定義 */
 	public void clickButton_figure(View v) {
 		BigDecimal figure = BigDecimal.valueOf(0);
+		i = true;
 		// クリック時の処理
 		switch (v.getId()) {
 		case R.id.button1:
@@ -83,24 +88,34 @@ public class MainActivity extends Activity {
 			break;
 		}
 
+		if (error == true)
+			text.setText("error");
+
+		/* 桁数制限 */
+		else if (buf == buf.max(BigDecimal.valueOf(1E9))
+				|| buf == buf.min(BigDecimal.valueOf(-1E9)))
+			text.setText(buf.toPlainString());
+
 		/* 整数計算 */
-		if (dig == 0)
+		else if (dig == 0) {
 			buf = (buf.movePointRight(1)).add(figure);
+			text.setText(buf.toPlainString());
+		}
 
 		/* 小数計算 */
 		else {
 			buf = buf.add(figure.movePointLeft(dig));
 			dig++;
+			text.setText(buf.toPlainString());
 		}
 
-		text.setText(buf.toPlainString());
 	}
 
 	/* 小数点ボタン定義 */
 	public void clickButton_dot(View v) {
 		if (dig == 0)
 			dig = 1;
-		text.setText(buf.toPlainString());
+		text.setText(buf.toPlainString() + ".");
 	}
 
 	/* 演算ボタン定義 */
@@ -109,36 +124,53 @@ public class MainActivity extends Activity {
 		// 型変換
 
 		// 保持してる演算符号に従って演算
-		switch (calc) {
-		case 0:
-			// なにもしない
-			result = buf;
-			break;
-		case 1:
-			// 加算
-			result = result.add(buf);
-			break;
-		case 2:
-			// 減算
-			result = result.subtract(buf);
-			break;
-		case 3:
-			// 掛け算
-			result = result.multiply(buf);
-			break;
-		case 4:
-			// 割り算
-			result = result.divide(buf, 20, BigDecimal.ROUND_HALF_UP);
-			break;
+		if (i == true) {
+			switch (calc) {
+			case 0:
+				// なにもしない
+				result = buf;
+				break;
+			case 1:
+				// 加算
+				result = result.add(buf);
+				break;
+			case 2:
+				// 減算
+				result = result.subtract(buf);
+				break;
+			case 3:
+				// 掛け算
+				result = result.multiply(buf);
+				break;
+			case 4:
+				// 割り算
+				if (buf == BigDecimal.valueOf(0))
+					error = true;
+				else
+					result = result.divide(buf, 11, BigDecimal.ROUND_HALF_UP);
+				break;
+			}
+			/* 桁数制限 */
+			if (result == result.max(BigDecimal.valueOf(1E10))
+					|| result == result.min(BigDecimal.valueOf(-1E10))) {
+				error = true;
+			}
+			i = false;
 		}
 
-		/* 末尾0を消す */
-		result = result.stripTrailingZeros();
+		if (error == true)
+			text.setText("error");
+		else {
+			/* 桁数制限 */
+			result = result.setScale(10, BigDecimal.ROUND_HALF_EVEN);
 
-		buf = BigDecimal.valueOf(0);// 入力リセット
-		dig = 0;// 小数点リセット
-		text.setText(result.toPlainString());
-		;// 結果表示
+			/* 末尾0を消す */
+			result = result.stripTrailingZeros();
+
+			buf = BigDecimal.valueOf(0);// 入力リセット
+			dig = 0;// 小数点リセット
+			text.setText(result.toPlainString());// 結果表示
+		}
 
 		// 演算符号の保持
 		switch (v.getId()) {
@@ -160,7 +192,7 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.button_equal:
 			// イコール
-			calc = 0;// とりあえずリセット
+			calc = 0;
 			break;
 		}
 
