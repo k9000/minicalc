@@ -34,6 +34,20 @@
             android:layout_height="wrap_content" >
 
             <Button
+                android:id="@+id/button_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clickButton_copy"
+                android:text="copy" />
+
+            <Button
+                android:id="@+id/button_paste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clickButton_paste"
+                android:text="paste" />
+
+            <Button
                 android:id="@+id/button_AC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

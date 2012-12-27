@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -196,6 +199,44 @@ public class MainActivity extends Activity {
 			break;
 		}
 
+	}
+
+	public void clickButton_copy(View v) {
+		// クリップボードに格納するItemを作成
+		ClipData.Item item;
+		if (i == true) {
+			item = new ClipData.Item(buf.toPlainString());
+		} else {
+			item = new ClipData.Item(result.toPlainString());
+		}
+
+		// MIMETYPEの作成
+		String[] mimeType = new String[1];
+		mimeType[0] = ClipDescription.MIMETYPE_TEXT_URILIST;
+
+		// クリップボードに格納するClipDataオブジェクトの作成
+		ClipData cd = new ClipData(new ClipDescription("text_data", mimeType),
+				item);
+
+		// クリップボードにデータを格納
+		ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		cm.setPrimaryClip(cd);
+	}
+
+	public void clickButton_paste(View v) {
+		// システムのクリップボードを取得
+		ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+
+		// クリップボードからClipDataを取得
+		ClipData cd = cm.getPrimaryClip();
+
+		// クリップデータからItemを取得
+		if (cd != null) {
+			ClipData.Item item = cd.getItemAt(0);
+			buf = new BigDecimal((String) item.getText());
+			text.setText(buf.toPlainString());
+			i = true;
+		}
 	}
 
 }
