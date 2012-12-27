@@ -2,7 +2,6 @@ package com.tlulybluemonochrome.minimarucalc;
 
 import java.math.BigDecimal;
 
-import android.R.string;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -14,7 +13,7 @@ public class MainActivity extends Activity {
 	BigDecimal buf = BigDecimal.valueOf(0); // バッファ
 	BigDecimal result = BigDecimal.valueOf(0); // 計算結果
 	char calc = 0; // 四則演算の符号用
-	long dig = 0; // 小数点以下の桁数保持用
+	int dig = 0; // 小数点以下の桁数保持用
 	TextView text;
 
 	@Override
@@ -84,11 +83,17 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		if (dig != 0) { // 小数点計算
-			dig = dig * 10;
-			buf = buf.add((figure.divide(BigDecimal.valueOf(dig))));
-		} else
-			buf = (buf.multiply(BigDecimal.valueOf(10))).add(figure); // 整数計算
+
+		/* 整数計算 */
+		if (dig == 0)
+			buf = (buf.movePointRight(1)).add(figure);
+
+		/* 小数計算 */
+		else {
+			buf = buf.add(figure.movePointLeft(dig));
+			dig++;
+		}
+
 		setFigure(buf);
 	}
 
@@ -125,12 +130,14 @@ public class MainActivity extends Activity {
 		case 4:
 			// 割り算
 			result = result.divide(buf, 20, BigDecimal.ROUND_HALF_UP);
-			int i = 1;
-			while(result == result.max(result.setScale( i ,BigDecimal.ROUND_UP))){
-				result = result.setScale( i );
-				i--;
-			}
 			break;
+		}
+
+		/* 末尾0を消す */
+		int i = result.scale();
+		while (result == result.max(result.setScale(i, BigDecimal.ROUND_UP))) {
+			result = result.setScale(i);
+			i--;
 		}
 
 		buf = BigDecimal.valueOf(0);// 入力リセット
@@ -157,7 +164,9 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.button_equal:
 			// イコール
-			calc = 0;// とりあえずリセット
+			buf = result;
+			result = BigDecimal.valueOf(0);
+			calc = 1;// とりあえずリセット
 			break;
 		}
 
