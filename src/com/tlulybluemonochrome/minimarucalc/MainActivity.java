@@ -36,14 +36,14 @@ public class MainActivity extends Activity {
 		buf = BigDecimal.valueOf(0);
 		dig = 0;
 		calc = 1;
-		setFigure(buf);
+		text.setText(buf.toPlainString());
 	}
 
 	public void clickButton_C(View v) {
 		buf = BigDecimal.valueOf(0);
 		;
 		dig = 0;
-		setFigure(buf);
+		text.setText(buf.toPlainString());
 	}
 
 	/* 数字ボタン定義 */
@@ -83,7 +83,6 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-
 		/* 整数計算 */
 		if (dig == 0)
 			buf = (buf.movePointRight(1)).add(figure);
@@ -94,14 +93,14 @@ public class MainActivity extends Activity {
 			dig++;
 		}
 
-		setFigure(buf);
+		text.setText(buf.toPlainString());
 	}
 
 	/* 小数点ボタン定義 */
 	public void clickButton_dot(View v) {
 		if (dig == 0)
 			dig = 1;
-		setFigure(buf);
+		text.setText(buf.toPlainString());
 	}
 
 	/* 演算ボタン定義 */
@@ -134,15 +133,12 @@ public class MainActivity extends Activity {
 		}
 
 		/* 末尾0を消す */
-		int i = result.scale();
-		while (result == result.max(result.setScale(i, BigDecimal.ROUND_UP))) {
-			result = result.setScale(i);
-			i--;
-		}
+		result = result.stripTrailingZeros();
 
 		buf = BigDecimal.valueOf(0);// 入力リセット
 		dig = 0;// 小数点リセット
-		setFigure(result);// 結果表示
+		text.setText(result.toPlainString());
+		;// 結果表示
 
 		// 演算符号の保持
 		switch (v.getId()) {
@@ -164,19 +160,10 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.button_equal:
 			// イコール
-			buf = result;
-			result = BigDecimal.valueOf(0);
-			calc = 1;// とりあえずリセット
+			calc = 0;// とりあえずリセット
 			break;
 		}
 
-	}
-
-	public void setFigure(BigDecimal buf) {
-		String temp;
-		temp = String.valueOf(buf);
-
-		text.setText(temp);
 	}
 
 }
