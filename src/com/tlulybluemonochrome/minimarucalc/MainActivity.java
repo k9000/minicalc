@@ -8,8 +8,10 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -31,7 +33,14 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		// getMenuInflater().inflate(R.menu.activity_main, menu);
+		menu.add(Menu.NONE, 0, Menu.NONE, "Settings");
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Toast.makeText(this, "アップデートをお待ちください", Toast.LENGTH_SHORT).show();
 		return true;
 	}
 
@@ -221,6 +230,9 @@ public class MainActivity extends Activity {
 		// クリップボードにデータを格納
 		ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 		cm.setPrimaryClip(cd);
+
+		Toast.makeText(this, "コピーしました", Toast.LENGTH_SHORT).show();
+
 	}
 
 	public void clickButton_paste(View v) {
@@ -237,6 +249,9 @@ public class MainActivity extends Activity {
 			text.setText(buf.toPlainString());
 			i = true;
 		}
+
+		Toast.makeText(this, "ペーストしました", Toast.LENGTH_SHORT).show();
+
 	}
 
 }
