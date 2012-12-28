@@ -1,1 +1,3 @@
 minimarucalc
+
+githubとJAVA勉強用に製作したAndroidアプリです
