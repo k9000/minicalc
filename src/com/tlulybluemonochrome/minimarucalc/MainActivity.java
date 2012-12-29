@@ -135,8 +135,10 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		if (error == true)
+		if (error == true){
 			text.setText("error");
+			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+		}
 
 		/* 桁数制限 */
 		else if (buf == buf.max(BigDecimal.valueOf(1E9))
@@ -205,9 +207,10 @@ public class MainActivity extends Activity {
 			i = false;
 		}
 
-		if (error == true)
+		if (error == true) {
 			text.setText("error");
-		else {
+			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+		} else {
 			/* 桁数制限 */
 			result = result.setScale(10, BigDecimal.ROUND_HALF_EVEN);
 
