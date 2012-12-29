@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +23,17 @@ public class MainActivity extends Activity {
 	boolean i = false; // 演算ボタン用フラグ
 	boolean error = false; // エラーフラグ
 	TextView text;
+	private static final int MENU_ID_MENU1 = (Menu.FIRST + 1);
+	private static final int MENU_ID_MENU2 = (Menu.FIRST + 2);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/* Intentでthemeを変更 */
+		Intent intent = getIntent();
+		int theme = intent.getIntExtra("com.tlulybluemonochrome.minimarucalc",
+				android.R.style.Theme_Holo_Light);
+		setTheme(theme);
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
 	}
@@ -34,14 +42,41 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.activity_main, menu);
-		menu.add(Menu.NONE, 0, Menu.NONE, "Settings");
+		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "Light theme");
+		menu.add(Menu.NONE, MENU_ID_MENU2, Menu.NONE, "Dark theme");
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Toast.makeText(this, "アップデートをお待ちください", Toast.LENGTH_SHORT).show();
-		return true;
+		/* 自分にIntentを投げてActivity再起動 */
+		boolean ret = true;
+		Intent intent = new Intent(this, this.getClass());
+		switch (item.getItemId()) {
+		default:
+			ret = super.onOptionsItemSelected(item);
+			break;
+		case MENU_ID_MENU1:
+			Toast.makeText(this, "Setting Lightness", Toast.LENGTH_SHORT)
+					.show();
+			ret = true;
+			intent.putExtra("com.tlulybluemonochrome.minimarucalc",
+					android.R.style.Theme_Holo_Light);
+			startActivity(intent);
+			finish();
+			break;
+		case MENU_ID_MENU2:
+			Toast.makeText(this, "Setting Darkness", Toast.LENGTH_SHORT).show();
+			ret = true;
+			startActivity(new Intent(this, this.getClass()));
+			intent.putExtra("com.tlulybluemonochrome.minimarucalc",
+					android.R.style.Theme_Holo);
+			startActivity(intent);
+			finish();
+			break;
+		}
+		return ret;
+
 	}
 
 	/* クリア定義 */
