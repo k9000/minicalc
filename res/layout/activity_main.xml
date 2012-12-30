@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="right"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".MainActivity" >
@@ -45,7 +44,7 @@
                 android:layout_width="70dp"
                 android:layout_height="43dp"
                 android:onClick="clickButton_copy"
-                android:text=" copy" />
+                android:text="copy" />
 
             <Button
                 android:id="@+id/button_paste"
@@ -59,14 +58,14 @@
                 android:layout_width="70dp"
                 android:layout_height="43dp"
                 android:onClick="clickButton_AC"
-                android:text=" AC " />
+                android:text="AC" />
 
             <Button
                 android:id="@+id/button_C"
                 android:layout_width="70dp"
                 android:layout_height="43dp"
                 android:onClick="clickButton_C"
-                android:text="  C  " />
+                android:text="C" />
         </TableRow>
 
         <TableRow
