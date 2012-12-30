@@ -22,9 +22,9 @@ public class MainActivity extends Activity {
 	int dig = 0; // 小数点以下の桁数保持用
 	boolean i = false; // 演算ボタン用フラグ
 	boolean error = false; // エラーフラグ
-	TextView text;
-	private static final int MENU_ID_MENU1 = (Menu.FIRST + 1);
-	private static final int MENU_ID_MENU2 = (Menu.FIRST + 2);
+	TextView text; // 表示出力
+	private static final int MENU_ID_MENU1 = (Menu.FIRST + 1); // メニュー1
+	private static final int MENU_ID_MENU2 = (Menu.FIRST + 2); // メニュー2
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		if (error == true){
+		if (error == true) {
 			text.setText("error");
 			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
 		}
@@ -248,6 +248,7 @@ public class MainActivity extends Activity {
 
 	}
 
+	/* コピーボタン */
 	public void clickButton_copy(View v) {
 		// クリップボードに格納するItemを作成
 		ClipData.Item item;
@@ -273,6 +274,7 @@ public class MainActivity extends Activity {
 
 	}
 
+	/* 貼り付けボタン */
 	public void clickButton_paste(View v) {
 		// システムのクリップボードを取得
 		ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
