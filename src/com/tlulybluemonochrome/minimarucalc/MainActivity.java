@@ -8,6 +8,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -142,7 +143,7 @@ public class MainActivity extends Activity {
 
 		/* 桁数制限 */
 		else if (buf == buf.max(BigDecimal.valueOf(1E9))
-				|| buf == buf.min(BigDecimal.valueOf(-1E9)))
+				|| buf == buf.min(BigDecimal.valueOf(-1E9))|| buf.scale()>8 )
 			text.setText(buf.toPlainString());
 
 		/* 整数計算 */
@@ -193,7 +194,7 @@ public class MainActivity extends Activity {
 				break;
 			case 4:
 				// 割り算
-				if (buf == BigDecimal.valueOf(0))
+				if (buf.doubleValue() == 0)
 					error = true;
 				else
 					result = result.divide(buf, 11, BigDecimal.ROUND_HALF_UP);
@@ -216,6 +217,8 @@ public class MainActivity extends Activity {
 
 			/* 末尾0を消す */
 			result = result.stripTrailingZeros();
+			if (result.doubleValue() == 0)
+				result = BigDecimal.ZERO;
 
 			buf = BigDecimal.valueOf(0);// 入力リセット
 			dig = 0;// 小数点リセット
