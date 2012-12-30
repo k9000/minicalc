@@ -143,7 +143,7 @@ public class MainActivity extends Activity {
 
 		/* 桁数制限 */
 		else if (buf == buf.max(BigDecimal.valueOf(1E9))
-				|| buf == buf.min(BigDecimal.valueOf(-1E9))|| buf.scale()>8 )
+				|| buf == buf.min(BigDecimal.valueOf(-1E9)) || buf.scale() > 8)
 			text.setText(buf.toPlainString());
 
 		/* 整数計算 */
@@ -289,6 +289,15 @@ public class MainActivity extends Activity {
 		if (cd != null) {
 			ClipData.Item item = cd.getItemAt(0);
 			buf = new BigDecimal((String) item.getText());
+
+			/* 桁数制限 */
+			buf = buf.setScale(10, BigDecimal.ROUND_HALF_EVEN);
+
+			/* 末尾0を消す */
+			buf = buf.stripTrailingZeros();
+			if (buf.doubleValue() == 0)
+				buf = BigDecimal.ZERO;
+
 			text.setText(buf.toPlainString());
 			i = true;
 		}
