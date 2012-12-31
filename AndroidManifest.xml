@@ -10,9 +10,10 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/calc_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo" android:hardwareAccelerated="true">
+        android:theme="@android:style/Theme.Holo" >
         <activity
             android:name="com.tlulybluemonochrome.minimarucalc.MainActivity"
             android:label="@string/app_name" >
@@ -22,6 +23,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name="com.tlulybluemonochrome.minimarucalc.CalcWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget" />
+        </receiver>
+
+        <service
+            android:name="com.tlulybluemonochrome.minimarucalc.CalcService"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_FIGURE" />
+                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_DOT" />
+                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_CALC" />
+                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_CLEAR" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

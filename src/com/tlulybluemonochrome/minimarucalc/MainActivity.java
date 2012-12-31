@@ -8,7 +8,6 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +36,7 @@ public class MainActivity extends Activity {
 		setTheme(theme);
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
+		
 	}
 
 	@Override
