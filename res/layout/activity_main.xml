@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="right"
-        android:text="@string/hello_world" />
+        android:text="0" />
 
     <Space
         android:layout_width="match_parent"
