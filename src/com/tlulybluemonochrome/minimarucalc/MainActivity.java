@@ -25,9 +25,11 @@ public class MainActivity extends Activity {
 	TextView text; // 表示出力
 	private static final int MENU_ID_MENU1 = (Menu.FIRST + 1); // メニュー1
 	private static final int MENU_ID_MENU2 = (Menu.FIRST + 2); // メニュー2
+	private static final int MENU_ID_MENU3 = (Menu.FIRST + 3); // メニュー3
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		android.os.Debug.waitForDebugger();
 		super.onCreate(savedInstanceState);
 		/* Intentでthemeを変更 */
 		Intent intent = getIntent();
@@ -42,9 +44,10 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		// getMenuInflater().inflate(R.menu.activity_main, menu);
+		//getMenuInflater().inflate(R.menu.activity_main, menu);
 		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "Light theme");
 		menu.add(Menu.NONE, MENU_ID_MENU2, Menu.NONE, "Dark theme");
+		menu.add(Menu.NONE, MENU_ID_MENU3, Menu.NONE, "Setting");
 		return true;
 	}
 
@@ -73,6 +76,12 @@ public class MainActivity extends Activity {
 			intent.putExtra("com.tlulybluemonochrome.minimarucalc",
 					android.R.style.Theme_Holo);
 			startActivity(intent);
+			finish();
+			break;
+		case MENU_ID_MENU3:
+			ret = true;
+			Intent intent1 = new Intent(this, (Class<?>)SettingsActivity.class);
+			startActivity(intent1);
 			finish();
 			break;
 		}
