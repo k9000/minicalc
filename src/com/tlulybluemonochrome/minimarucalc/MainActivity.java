@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		android.os.Debug.waitForDebugger();
+		// android.os.Debug.waitForDebugger();
 		super.onCreate(savedInstanceState);
 		/* Intentでthemeを変更 */
 		Intent intent = getIntent();
@@ -38,13 +38,13 @@ public class MainActivity extends Activity {
 		setTheme(theme);
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
-		
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.activity_main, menu);
+		// getMenuInflater().inflate(R.menu.activity_main, menu);
 		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "Light theme");
 		menu.add(Menu.NONE, MENU_ID_MENU2, Menu.NONE, "Dark theme");
 		menu.add(Menu.NONE, MENU_ID_MENU3, Menu.NONE, "Setting");
@@ -80,9 +80,9 @@ public class MainActivity extends Activity {
 			break;
 		case MENU_ID_MENU3:
 			ret = true;
-			Intent intent1 = new Intent(this, (Class<?>)SettingsActivity.class);
+			Intent intent1 = new Intent(this, (Class<?>) SettingsActivity.class);
 			startActivity(intent1);
-			finish();
+			// finish();
 			break;
 		}
 		return ret;
@@ -297,7 +297,11 @@ public class MainActivity extends Activity {
 		// クリップデータからItemを取得
 		if (cd != null) {
 			ClipData.Item item = cd.getItemAt(0);
-			buf = new BigDecimal((String) item.getText());
+			try {
+				buf = new BigDecimal((String) item.getText());
+			} catch (NumberFormatException e) {
+				Toast.makeText(this, "ペーストできませんでした", Toast.LENGTH_SHORT).show();
+			}
 
 			/* 桁数制限 */
 			buf = buf.setScale(10, BigDecimal.ROUND_HALF_EVEN);
