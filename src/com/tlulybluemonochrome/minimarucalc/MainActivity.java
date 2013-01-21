@@ -301,6 +301,7 @@ public class MainActivity extends Activity {
 				buf = new BigDecimal((String) item.getText());
 			} catch (NumberFormatException e) {
 				Toast.makeText(this, "ペーストできませんでした", Toast.LENGTH_SHORT).show();
+				return;
 			}
 
 			/* 桁数制限 */
