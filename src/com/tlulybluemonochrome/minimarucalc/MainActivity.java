@@ -3,11 +3,13 @@ package com.tlulybluemonochrome.minimarucalc;
 import java.math.BigDecimal;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,66 +25,46 @@ public class MainActivity extends Activity {
 	boolean i = false; // 演算ボタン用フラグ
 	boolean error = false; // エラーフラグ
 	TextView text; // 表示出力
-	private static final int MENU_ID_MENU1 = (Menu.FIRST + 1); // メニュー1
-	private static final int MENU_ID_MENU2 = (Menu.FIRST + 2); // メニュー2
-	private static final int MENU_ID_MENU3 = (Menu.FIRST + 3); // メニュー3
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// android.os.Debug.waitForDebugger();
-		super.onCreate(savedInstanceState);
-		/* Intentでthemeを変更 */
-		Intent intent = getIntent();
-		int theme = intent.getIntExtra("com.tlulybluemonochrome.minimarucalc",
-				android.R.style.Theme_Holo_Light);
+		/* Preferencesからテーマ設定 */
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String thme_preference = sharedPreferences.getString("theme_list",
+				"Light");
+		int theme = android.R.style.Theme_Holo_Light;
+		if (thme_preference.equals("Light"))
+			theme = android.R.style.Theme_Holo_Light;
+		else if (thme_preference.equals("Dark"))
+			theme = android.R.style.Theme_Holo;
 		setTheme(theme);
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
-
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		// getMenuInflater().inflate(R.menu.activity_main, menu);
-		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "Light theme");
-		menu.add(Menu.NONE, MENU_ID_MENU2, Menu.NONE, "Dark theme");
-		menu.add(Menu.NONE, MENU_ID_MENU3, Menu.NONE, "Setting");
+		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		/* 自分にIntentを投げてActivity再起動 */
 		boolean ret = true;
-		Intent intent = new Intent(this, this.getClass());
 		switch (item.getItemId()) {
 		default:
 			ret = super.onOptionsItemSelected(item);
 			break;
-		case MENU_ID_MENU1:
-			Toast.makeText(this, "Setting Lightness", Toast.LENGTH_SHORT)
-					.show();
+		case R.id.menu_settings:
+			/* 設定画面呼び出し */
 			ret = true;
-			intent.putExtra("com.tlulybluemonochrome.minimarucalc",
-					android.R.style.Theme_Holo_Light);
+			Intent intent = new Intent(this, (Class<?>) SettingsActivity.class);
 			startActivity(intent);
 			finish();
-			break;
-		case MENU_ID_MENU2:
-			Toast.makeText(this, "Setting Darkness", Toast.LENGTH_SHORT).show();
-			ret = true;
-			startActivity(new Intent(this, this.getClass()));
-			intent.putExtra("com.tlulybluemonochrome.minimarucalc",
-					android.R.style.Theme_Holo);
-			startActivity(intent);
-			finish();
-			break;
-		case MENU_ID_MENU3:
-			ret = true;
-			Intent intent1 = new Intent(this, (Class<?>) SettingsActivity.class);
-			startActivity(intent1);
-			// finish();
 			break;
 		}
 		return ret;
