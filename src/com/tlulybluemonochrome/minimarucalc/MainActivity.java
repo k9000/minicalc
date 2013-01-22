@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -40,9 +41,25 @@ public class MainActivity extends Activity {
 		else if (thme_preference.equals("Dark"))
 			theme = android.R.style.Theme_Holo;
 		setTheme(theme);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
+
+		/* セーブデータ取得 */
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		try {
+			buf = new BigDecimal(sp.getString("SaveString", "0"));
+		} catch (NumberFormatException e) {
+			buf = BigDecimal.valueOf(0);
+		}
+		/* 末尾0を消す */
+		buf = buf.stripTrailingZeros();
+		if (buf.doubleValue() == 0)
+			buf = BigDecimal.ZERO;
+		text.setText(buf.toPlainString());
+
 	}
 
 	@Override
@@ -300,6 +317,14 @@ public class MainActivity extends Activity {
 
 		Toast.makeText(this, "ペーストしました", Toast.LENGTH_SHORT).show();
 
+	}
+
+	public void onDestroy() {
+		super.onDestroy();
+		/* データセーブ */
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		sp.edit().putString("SaveString", buf.toPlainString()).commit();
 	}
 
 }
