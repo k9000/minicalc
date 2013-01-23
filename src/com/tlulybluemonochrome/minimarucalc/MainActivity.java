@@ -23,8 +23,7 @@ public class MainActivity extends Activity {
 	BigDecimal result = BigDecimal.valueOf(0); // 計算結果
 	int calc = 0; // 四則演算の符号用
 	int dig = 0; // 小数点以下の桁数保持用
-	boolean i = false; // 演算ボタン用フラグ
-	boolean error = false; // エラーフラグ
+	int i = 0; // 演算ボタン用フラグ
 	TextView text; // 表示出力
 
 	@Override
@@ -49,7 +48,7 @@ public class MainActivity extends Activity {
 		/* セーブデータ取得 */
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		
+
 		try {
 			buf = new BigDecimal(sp.getString("SaveBuf", "0"));
 		} catch (NumberFormatException e) {
@@ -60,11 +59,10 @@ public class MainActivity extends Activity {
 		} catch (NumberFormatException e) {
 			result = BigDecimal.valueOf(0);
 		}
-		i = sp.getBoolean("SaveI", false);
+		i = sp.getInt("SaveI", 0);
 		calc = sp.getInt("SaveCalc", 0);
 		dig = sp.getInt("SaveDig", 0);
-		
-		
+
 		/* 末尾0を消す */
 		buf = buf.stripTrailingZeros();
 		if (buf.doubleValue() == 0)
@@ -72,22 +70,31 @@ public class MainActivity extends Activity {
 		result = result.stripTrailingZeros();
 		if (result.doubleValue() == 0)
 			result = BigDecimal.ZERO;
-		
-		if(i)text.setText(buf.toPlainString());
-		else text.setText(result.toPlainString());
+
+		if (i >= 1)
+			text.setText(buf.toPlainString());
+		else
+			text.setText(result.toPlainString());
 
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		if (i == -1) {
+			result = BigDecimal.valueOf(0);
+			buf = BigDecimal.valueOf(0);
+			dig = 0;
+			calc = 0;
+			i = 0;
+		}
 		/* データセーブ */
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		sp.edit().putString("SaveBuf", buf.toPlainString()).commit();
 		sp.edit().putString("SaveResult", result.toPlainString()).commit();
-		sp.edit().putBoolean("SaveI", i).commit();
-		sp.edit().putInt("SaveCalc",calc ).commit();
+		sp.edit().putInt("SaveI", i).commit();
+		sp.edit().putInt("SaveCalc", calc).commit();
 		sp.edit().putInt("SaveDig", dig).commit();
 
 	}
@@ -124,8 +131,7 @@ public class MainActivity extends Activity {
 		buf = BigDecimal.valueOf(0);
 		dig = 0;
 		calc = 0;
-		i = false;
-		error = false;
+		i = 0;
 		text.setText(buf.toPlainString());
 	}
 
@@ -139,7 +145,18 @@ public class MainActivity extends Activity {
 	/* 数字ボタン定義 */
 	public void clickButton_figure(View v) {
 		BigDecimal figure = BigDecimal.valueOf(0);
-		i = true;
+		if (i == -1) {
+			text.setText("error");
+			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			return;
+		} else if (i != 1) {
+			buf = BigDecimal.valueOf(0);
+			dig = 0;// 小数点リセット
+			if (i == -2)
+				calc = 0;
+		}
+		i = 1;
+
 		// クリック時の処理
 		switch (v.getId()) {
 		case R.id.button1:
@@ -174,13 +191,8 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		if (error == true) {
-			text.setText("error");
-			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
-		}
-
 		/* 桁数制限 */
-		else if (buf == buf.max(BigDecimal.valueOf(1E9))
+		if (buf == buf.max(BigDecimal.valueOf(1E9))
 				|| buf == buf.min(BigDecimal.valueOf(-1E9)) || buf.scale() > 8)
 			text.setText(buf.toPlainString());
 
@@ -209,10 +221,14 @@ public class MainActivity extends Activity {
 	/* 演算ボタン定義 */
 	public void clickButton_calc(View v) {
 		// クリック時の処理
-		// 型変換
+		if (i == -1) {
+			text.setText("error");
+			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			return;
+		}
 
 		// 保持してる演算符号に従って演算
-		if (i == true) {
+		else if (i >= 1 || v.getId() == R.id.button_equal) {
 			switch (calc) {
 			case 0:
 				// なにもしない
@@ -232,36 +248,34 @@ public class MainActivity extends Activity {
 				break;
 			case 4:
 				// 割り算
-				if (buf.doubleValue() == 0)
-					error = true;
-				else
+				if (buf.doubleValue() == 0) {
+					i = -1;
+					text.setText("error");
+					Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+					return;
+				} else
 					result = result.divide(buf, 11, BigDecimal.ROUND_HALF_UP);
 				break;
 			}
 			/* 桁数制限 */
 			if (result == result.max(BigDecimal.valueOf(1E10))
 					|| result == result.min(BigDecimal.valueOf(-1E10))) {
-				error = true;
+				i = -1;
+				text.setText("error");
+				Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+				return;
 			}
-			i = false;
 		}
+		i = 0;
+		/* 桁数制限 */
+		result = result.setScale(10, BigDecimal.ROUND_HALF_EVEN);
 
-		if (error == true) {
-			text.setText("error");
-			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
-		} else {
-			/* 桁数制限 */
-			result = result.setScale(10, BigDecimal.ROUND_HALF_EVEN);
+		/* 末尾0を消す */
+		result = result.stripTrailingZeros();
+		if (result.doubleValue() == 0)
+			result = BigDecimal.ZERO;
 
-			/* 末尾0を消す */
-			result = result.stripTrailingZeros();
-			if (result.doubleValue() == 0)
-				result = BigDecimal.ZERO;
-
-			buf = BigDecimal.valueOf(0);// 入力リセット
-			dig = 0;// 小数点リセット
-			text.setText(result.toPlainString());// 結果表示
-		}
+		text.setText(result.toPlainString());// 結果表示
 
 		// 演算符号の保持
 		switch (v.getId()) {
@@ -283,7 +297,7 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.button_equal:
 			// イコール
-			calc = 0;
+			i = -2;
 			break;
 		}
 
@@ -293,7 +307,7 @@ public class MainActivity extends Activity {
 	public void clickButton_copy(View v) {
 		// クリップボードに格納するItemを作成
 		ClipData.Item item;
-		if (i == true) {
+		if (i >= 1) {
 			item = new ClipData.Item(buf.toPlainString());
 		} else {
 			item = new ClipData.Item(result.toPlainString());
@@ -342,7 +356,7 @@ public class MainActivity extends Activity {
 				buf = BigDecimal.ZERO;
 
 			text.setText(buf.toPlainString());
-			i = true;
+			i = 2;
 		}
 
 		Toast.makeText(this, "ペーストしました", Toast.LENGTH_SHORT).show();
