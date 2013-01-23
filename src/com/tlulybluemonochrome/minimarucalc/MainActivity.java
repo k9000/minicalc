@@ -123,12 +123,12 @@ public class MainActivity extends Activity {
 			ret = true;
 			Intent intent = new Intent(this, (Class<?>) SettingsActivity.class);
 			startActivity(intent);
-			finish();
 			break;
 		}
 		return ret;
 
 	}
+
 
 	/* クリア定義 */
 	public void clickButton_AC(View v) {

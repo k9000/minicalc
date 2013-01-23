@@ -52,8 +52,9 @@ public class SettingsActivity extends PreferenceActivity {
 		super.onDestroy();
 		/* メイン画面起動 */
 		Intent intent = new Intent(this, (Class<?>) MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		startActivity(intent);
-		finish();
 	}
 
 	/**
