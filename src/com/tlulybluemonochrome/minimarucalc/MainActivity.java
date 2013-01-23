@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 
 	BigDecimal buf = BigDecimal.valueOf(0); // バッファ
 	BigDecimal result = BigDecimal.valueOf(0); // 計算結果
-	char calc = 0; // 四則演算の符号用
+	int calc = 0; // 四則演算の符号用
 	int dig = 0; // 小数点以下の桁数保持用
 	boolean i = false; // 演算ボタン用フラグ
 	boolean error = false; // エラーフラグ
@@ -49,16 +49,46 @@ public class MainActivity extends Activity {
 		/* セーブデータ取得 */
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(this);
+		
 		try {
-			buf = new BigDecimal(sp.getString("SaveString", "0"));
+			buf = new BigDecimal(sp.getString("SaveBuf", "0"));
 		} catch (NumberFormatException e) {
 			buf = BigDecimal.valueOf(0);
 		}
+		try {
+			result = new BigDecimal(sp.getString("SaveResult", "0"));
+		} catch (NumberFormatException e) {
+			result = BigDecimal.valueOf(0);
+		}
+		i = sp.getBoolean("SaveI", false);
+		calc = sp.getInt("SaveCalc", 0);
+		dig = sp.getInt("SaveDig", 0);
+		
+		
 		/* 末尾0を消す */
 		buf = buf.stripTrailingZeros();
 		if (buf.doubleValue() == 0)
 			buf = BigDecimal.ZERO;
-		text.setText(buf.toPlainString());
+		result = result.stripTrailingZeros();
+		if (result.doubleValue() == 0)
+			result = BigDecimal.ZERO;
+		
+		if(i)text.setText(buf.toPlainString());
+		else text.setText(result.toPlainString());
+
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		/* データセーブ */
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		sp.edit().putString("SaveBuf", buf.toPlainString()).commit();
+		sp.edit().putString("SaveResult", result.toPlainString()).commit();
+		sp.edit().putBoolean("SaveI", i).commit();
+		sp.edit().putInt("SaveCalc",calc ).commit();
+		sp.edit().putInt("SaveDig", dig).commit();
 
 	}
 
@@ -317,14 +347,6 @@ public class MainActivity extends Activity {
 
 		Toast.makeText(this, "ペーストしました", Toast.LENGTH_SHORT).show();
 
-	}
-
-	public void onDestroy() {
-		super.onDestroy();
-		/* データセーブ */
-		SharedPreferences sp = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		sp.edit().putString("SaveString", buf.toPlainString()).commit();
 	}
 
 }

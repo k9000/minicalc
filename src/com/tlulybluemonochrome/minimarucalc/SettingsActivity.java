@@ -47,6 +47,7 @@ public class SettingsActivity extends PreferenceActivity {
 		setupSimplePreferencesScreen();
 	}
 
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		/* メイン画面起動 */
