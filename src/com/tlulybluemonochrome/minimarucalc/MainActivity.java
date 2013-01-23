@@ -45,36 +45,39 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
 
-		/* セーブデータ取得 */
-		SharedPreferences sp = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		boolean save;
+		if (save = sharedPreferences.getBoolean("save_checkbox", true)) {
+			/* セーブデータ取得 */
+			SharedPreferences sp = PreferenceManager
+					.getDefaultSharedPreferences(this);
 
-		try {
-			buf = new BigDecimal(sp.getString("SaveBuf", "0"));
-		} catch (NumberFormatException e) {
-			buf = BigDecimal.valueOf(0);
+			try {
+				buf = new BigDecimal(sp.getString("SaveBuf", "0"));
+			} catch (NumberFormatException e) {
+				buf = BigDecimal.valueOf(0);
+			}
+			try {
+				result = new BigDecimal(sp.getString("SaveResult", "0"));
+			} catch (NumberFormatException e) {
+				result = BigDecimal.valueOf(0);
+			}
+			i = sp.getInt("SaveI", 0);
+			calc = sp.getInt("SaveCalc", 0);
+			dig = sp.getInt("SaveDig", 0);
+
+			/* 末尾0を消す */
+			buf = buf.stripTrailingZeros();
+			if (buf.doubleValue() == 0)
+				buf = BigDecimal.ZERO;
+			result = result.stripTrailingZeros();
+			if (result.doubleValue() == 0)
+				result = BigDecimal.ZERO;
+
+			if (i >= 1)
+				text.setText(buf.toPlainString());
+			else
+				text.setText(result.toPlainString());
 		}
-		try {
-			result = new BigDecimal(sp.getString("SaveResult", "0"));
-		} catch (NumberFormatException e) {
-			result = BigDecimal.valueOf(0);
-		}
-		i = sp.getInt("SaveI", 0);
-		calc = sp.getInt("SaveCalc", 0);
-		dig = sp.getInt("SaveDig", 0);
-
-		/* 末尾0を消す */
-		buf = buf.stripTrailingZeros();
-		if (buf.doubleValue() == 0)
-			buf = BigDecimal.ZERO;
-		result = result.stripTrailingZeros();
-		if (result.doubleValue() == 0)
-			result = BigDecimal.ZERO;
-
-		if (i >= 1)
-			text.setText(buf.toPlainString());
-		else
-			text.setText(result.toPlainString());
 
 	}
 
