@@ -59,8 +59,7 @@ public class MainActivity extends Activity {
 		format = format + "E0";
 		df = new DecimalFormat(format);
 
-		boolean save;
-		if (save = sharedPreferences.getBoolean("save_checkbox", true)) {
+		if (sharedPreferences.getBoolean("save_checkbox", true)) {
 			/* セーブデータ取得 */
 			SharedPreferences sp = PreferenceManager
 					.getDefaultSharedPreferences(this);
@@ -96,6 +95,19 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+		/* データセーブ */
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		sp.edit().putString("SaveBuf", buf.toPlainString()).commit();
+		sp.edit().putString("SaveResult", result.toPlainString()).commit();
+		sp.edit().putInt("SaveI", i).commit();
+		sp.edit().putInt("SaveCalc", calc).commit();
+		sp.edit().putInt("SaveDig", dig).commit();
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		if (i == -1) {
@@ -105,14 +117,6 @@ public class MainActivity extends Activity {
 			calc = 0;
 			i = 0;
 		}
-		/* データセーブ */
-		SharedPreferences sp = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		sp.edit().putString("SaveBuf", buf.toPlainString()).commit();
-		sp.edit().putString("SaveResult", result.toPlainString()).commit();
-		sp.edit().putInt("SaveI", i).commit();
-		sp.edit().putInt("SaveCalc", calc).commit();
-		sp.edit().putInt("SaveDig", dig).commit();
 
 	}
 
@@ -284,6 +288,7 @@ public class MainActivity extends Activity {
 		if (result.scale() <= -1) {
 			text.setText("error");
 			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			i = -1;
 			return;
 		}
 
@@ -365,7 +370,7 @@ public class MainActivity extends Activity {
 			}
 
 			/* 桁数制限 */
-			buf = buf.setScale(10, BigDecimal.ROUND_HALF_EVEN);
+			buf = new BigDecimal(df.format(buf));
 
 			/* 末尾0を消す */
 			buf = buf.stripTrailingZeros();
