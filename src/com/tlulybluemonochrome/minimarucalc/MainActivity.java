@@ -1,6 +1,7 @@
 package com.tlulybluemonochrome.minimarucalc;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,6 +26,8 @@ public class MainActivity extends Activity {
 	int dig = 0; // 小数点以下の桁数保持用
 	int i = 0; // 演算ボタン用フラグ
 	TextView text; // 表示出力
+	DecimalFormat df = new DecimalFormat(".000E0");
+	int sigdig;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,15 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		text = (TextView) findViewById(R.id.editText1);
+
+		/* 有効数字設定 */
+		sigdig = sharedPreferences.getInt("significant_digit", 20) + 1;
+		String format = ".";
+		for (int j = 0; j < sigdig; j++) {
+			format = format + "0";
+		}
+		format = format + "E0";
+		df = new DecimalFormat(format);
 
 		boolean save;
 		if (save = sharedPreferences.getBoolean("save_checkbox", true)) {
@@ -129,7 +141,6 @@ public class MainActivity extends Activity {
 
 	}
 
-
 	/* クリア定義 */
 	public void clickButton_AC(View v) {
 		result = BigDecimal.valueOf(0);
@@ -197,23 +208,27 @@ public class MainActivity extends Activity {
 		}
 
 		/* 桁数制限 */
-		if (buf == buf.max(BigDecimal.valueOf(1E9))
-				|| buf == buf.min(BigDecimal.valueOf(-1E9)) || buf.scale() > 8)
-			text.setText(buf.toPlainString());
+		buf = new BigDecimal(df.format(buf));
+		if (buf.scale() <= 0 || buf.scale() - dig < 0)
+			return;
 
 		/* 整数計算 */
 		else if (dig == 0) {
 			buf = (buf.movePointRight(1)).add(figure);
-			text.setText(buf.toPlainString());
 		}
 
 		/* 小数計算 */
 		else {
 			buf = buf.add(figure.movePointLeft(dig));
 			dig++;
-			text.setText(buf.toPlainString());
 		}
 
+		/* 末尾0を消す */
+		buf = buf.stripTrailingZeros();
+		if (buf.doubleValue() == 0)
+			buf = BigDecimal.ZERO;
+
+		text.setText(buf.toPlainString());
 	}
 
 	/* 小数点ボタン定義 */
@@ -259,21 +274,18 @@ public class MainActivity extends Activity {
 					Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
 					return;
 				} else
-					result = result.divide(buf, 11, BigDecimal.ROUND_HALF_UP);
+					result = result.divide(buf, 20, BigDecimal.ROUND_HALF_UP);
 				break;
-			}
-			/* 桁数制限 */
-			if (result == result.max(BigDecimal.valueOf(1E10))
-					|| result == result.min(BigDecimal.valueOf(-1E10))) {
-				i = -1;
-				text.setText("error");
-				Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
-				return;
 			}
 		}
 		i = 0;
 		/* 桁数制限 */
-		result = result.setScale(10, BigDecimal.ROUND_HALF_EVEN);
+		result = new BigDecimal(df.format(result));
+		if (result.scale() <= -1) {
+			text.setText("error");
+			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			return;
+		}
 
 		/* 末尾0を消す */
 		result = result.stripTrailingZeros();

@@ -1,12 +1,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <com.tlulybluemonochrome.minimarucalc.SeekBarPreference
+        android:defaultValue="19"
+        android:dialogMessage="桁数"
+        android:key="significant_digit"
+        android:max="20"
+        android:summary="有効数字の桁数"
+        android:text="桁"
+        android:title="有効数字" />
+
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="save_checkbox"
         android:summary="@string/pref_description_social_recommendations"
         android:title="データセーブ" />
-    
-    
+
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
         android:defaultValue="Light"
