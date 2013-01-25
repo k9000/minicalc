@@ -3,6 +3,7 @@ package com.tlulybluemonochrome.minimarucalc;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -38,7 +39,22 @@ public class SettingsActivity extends PreferenceActivity {
 	 * as a master/detail two-pane view on tablets. When true, a single pane is
 	 * shown on tablets.
 	 */
+
+	String thme_preference;
+	int sigdig;
+
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		/* Preferencesからテーマ設定 */
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		thme_preference = sharedPreferences.getString("theme_list", "Light");
+		sigdig = sharedPreferences.getInt("significant_digit", 20);
+
+	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -50,11 +66,20 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		/* メイン画面起動 */
-		Intent intent = new Intent(this, (Class<?>) MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		startActivity(intent);
+
+		/* Preferencesからテーマ設定 */
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (thme_preference != sharedPreferences.getString("theme_list",
+				"Light")
+				|| sigdig != sharedPreferences.getInt("significant_digit", 20)) {
+
+			/* メイン画面起動 */
+			Intent intent = new Intent(this, (Class<?>) MainActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(intent);
+		}
 	}
 
 	/**
