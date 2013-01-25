@@ -2,18 +2,18 @@
 
     <com.tlulybluemonochrome.minimarucalc.SeekBarPreference
         android:defaultValue="19"
-        android:dialogMessage="桁数"
+        android:dialogMessage="Significant Digits"
         android:key="significant_digit"
         android:max="20"
-        android:summary="有効数字の桁数"
+        android:summary="@string/the_number_of_significant_digits"
         android:text="桁"
-        android:title="有効数字" />
+        android:title="@string/significant_digits" />
 
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="save_checkbox"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="データセーブ" />
+        android:summary="@string/data_save_description"
+        android:title="@string/data_save" />
 
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
@@ -23,6 +23,6 @@
         android:key="theme_list"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="theme" />
+        android:title="@string/theme" />
 
 </PreferenceScreen>

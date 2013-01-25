@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">minimarucalc</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">設定</string>
+    <string name="button">button</string>
+    <string name="error">エラー</string>
+    <string name="copy">コピーしました</string>
+    <string name="paste">ペーストしました</string>
+    <string name="nopaste">ペースト出来ませんでした</string>
+    <string name="significant_digits">有効数字</string>
+    <string name="the_number_of_significant_digits">有効数字の桁数</string>
+    <string name="digit">桁</string>
+    <string name="data_save">データセーブ</string>
+    <string name="data_save_description">アプリ中断時にデータをセーブします</string>
+    <string name="theme">テーマ</string>
+    <string name="title_activity_seek_bar_preference">SeekBarPreference</string>
+
+</resources>

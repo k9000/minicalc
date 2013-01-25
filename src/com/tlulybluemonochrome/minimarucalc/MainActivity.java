@@ -167,7 +167,7 @@ public class MainActivity extends Activity {
 		BigDecimal figure = BigDecimal.valueOf(0);
 		if (i == -1) {
 			text.setText("error");
-			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
 			return;
 		} else if (i != 1) {
 			buf = BigDecimal.valueOf(0);
@@ -247,7 +247,7 @@ public class MainActivity extends Activity {
 		// クリック時の処理
 		if (i == -1) {
 			text.setText("error");
-			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -275,7 +275,7 @@ public class MainActivity extends Activity {
 				if (buf.doubleValue() == 0) {
 					i = -1;
 					text.setText("error");
-					Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
 					return;
 				} else
 					result = result.divide(buf, 20, BigDecimal.ROUND_HALF_UP);
@@ -287,7 +287,7 @@ public class MainActivity extends Activity {
 		result = new BigDecimal(df.format(result));
 		if (result.scale() <= -1) {
 			text.setText("error");
-			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
 			i = -1;
 			return;
 		}
@@ -347,7 +347,7 @@ public class MainActivity extends Activity {
 		ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 		cm.setPrimaryClip(cd);
 
-		Toast.makeText(this, "コピーしました", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, R.string.copy, Toast.LENGTH_SHORT).show();
 
 	}
 
@@ -365,7 +365,7 @@ public class MainActivity extends Activity {
 			try {
 				buf = new BigDecimal((String) item.getText());
 			} catch (NumberFormatException e) {
-				Toast.makeText(this, "ペーストできませんでした", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.nopaste, Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -381,7 +381,7 @@ public class MainActivity extends Activity {
 			i = 2;
 		}
 
-		Toast.makeText(this, "ペーストしました", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, R.string.paste, Toast.LENGTH_SHORT).show();
 
 	}
 

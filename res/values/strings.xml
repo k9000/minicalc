@@ -5,6 +5,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="button">button</string>
+    <string name="error">error</string>
+    <string name="copy">Copy completed</string>
+    <string name="paste">Paste completed</string>
+    <string name="nopaste">Could not paste</string>
+    <string name="significant_digits">Significant Digits</string>
+    <string name="the_number_of_significant_digits">The number of significant digits</string>
+    <string name="digit">digit</string>
+    <string name="data_save">Data Save</string>
+    <string name="data_save_description">Save the calculated data even after application</string>
+    <string name="theme">Theme</string>
     <string name="title_activity_seek_bar_preference">SeekBarPreference</string>
 
 </resources>
