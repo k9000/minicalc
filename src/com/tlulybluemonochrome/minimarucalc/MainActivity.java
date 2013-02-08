@@ -41,6 +41,10 @@ public class MainActivity extends Activity {
 			theme = android.R.style.Theme_Holo_Light;
 		else if (thme_preference.equals("Dark"))
 			theme = android.R.style.Theme_Holo;
+		else if (thme_preference.equals("MaruLight"))
+			theme = R.style.maruLight;
+		else if (thme_preference.equals("MaruDark"))
+			theme = R.style.maruDark;
 		else if (thme_preference.equals("Transparent"))
 			theme = android.R.style.Theme_DeviceDefault_Wallpaper;
 		setTheme(theme);

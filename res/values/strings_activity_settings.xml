@@ -17,6 +17,8 @@
     <string-array name="pref_example_list_titles">
         <item>Dark</item>
         <item>Light</item>
+        <item>MaruDark</item>
+        <item>MaruLight</item>
         <item>Transparent</item>
     </string-array>
     <string-array name="pref_example_list_values">
