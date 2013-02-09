@@ -4,6 +4,7 @@
     <string name="app_name">minimarucalc</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_advanced">Experimental</string>
     <string name="button">button</string>
     <string name="error">error</string>
     <string name="copy">Copy completed</string>
@@ -16,5 +17,11 @@
     <string name="data_save_description">Save the calculated data even after application</string>
     <string name="theme">Theme</string>
     <string name="title_activity_seek_bar_preference">SeekBarPreference</string>
+    <string name="title_section5">Calc 5</string>
+    <string name="title_section4">Calc 4</string>
+    <string name="title_section3">Calc 3</string>
+    <string name="title_section2">Calc 2</string>
+    <string name="title_section1">Calc 1</string>
+    <string name="title_activity_main_calc">MainCalc</string>
 
 </resources>

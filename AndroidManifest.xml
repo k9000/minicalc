@@ -54,6 +54,10 @@
             android:name="com.tlulybluemonochrome.minimarucalc.SeekBarPreference"
             android:label="@string/title_activity_seek_bar_preference" >
         </activity>
+        <activity
+            android:name="com.tlulybluemonochrome.minimarucalc.MainCalc"
+            android:label="@string/title_activity_main_calc" >
+        </activity>
     </application>
 
 </manifest>

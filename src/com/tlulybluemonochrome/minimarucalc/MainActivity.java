@@ -143,6 +143,13 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(this, (Class<?>) SettingsActivity.class);
 			startActivity(intent);
 			break;
+
+		case R.id.menu_advanced:
+			/* 設定画面呼び出し */
+			ret = true;
+			Intent intent1 = new Intent(this, (Class<?>) MainCalc.class);
+			startActivity(intent1);
+			break;
 		}
 		return ret;
 
@@ -278,7 +285,8 @@ public class MainActivity extends Activity {
 				if (buf.doubleValue() == 0) {
 					i = -1;
 					text.setText("error");
-					Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT)
+							.show();
 					return;
 				} else
 					result = result.divide(buf, 20, BigDecimal.ROUND_HALF_UP);
@@ -368,7 +376,8 @@ public class MainActivity extends Activity {
 			try {
 				buf = new BigDecimal((String) item.getText());
 			} catch (NumberFormatException e) {
-				Toast.makeText(this, R.string.nopaste, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.nopaste, Toast.LENGTH_SHORT)
+						.show();
 				return;
 			}
 
