@@ -1,8 +1,14 @@
 package com.tlulybluemonochrome.minimarucalc;
 
+
+import java.text.DecimalFormat;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +16,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,6 +43,24 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		/* Preferencesからテーマ設定 */
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String thme_preference = sharedPreferences.getString("theme_list",
+				"Light");
+		int theme = android.R.style.Theme_Holo_Light;
+		if (thme_preference.equals("Light"))
+			theme = android.R.style.Theme_Holo_Light;
+		else if (thme_preference.equals("Dark"))
+			theme = android.R.style.Theme_Holo;
+		else if (thme_preference.equals("MaruLight"))
+			theme = R.style.maruLight;
+		else if (thme_preference.equals("MaruDark"))
+			theme = R.style.maruDark;
+		else if (thme_preference.equals("Transparent"))
+			theme = android.R.style.Theme_DeviceDefault_Wallpaper;
+		setTheme(theme);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_calc);
 
@@ -80,6 +105,23 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main_calc, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean ret = true;
+		switch (item.getItemId()) {
+		default:
+			ret = super.onOptionsItemSelected(item);
+			break;
+		case R.id.menu_settings:
+			/* 設定画面呼び出し */
+			ret = true;
+			Intent intent = new Intent(this, (Class<?>) SettingsActivity.class);
+			startActivity(intent);
+			break;
+		}
+		return ret;
 	}
 
 	@Override
@@ -203,8 +245,35 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
-
+			
+			int i = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
 			mEditText = (EditText) getView().findViewById(R.id.editText1);
+			SharedPreferences sharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(getActivity());
+			
+			/* 有効数字設定 */
+			int sigdig = sharedPreferences.getInt("significant_digit", 20) + 1;
+			String format = ".";
+			for (int j = 0; j < sigdig; j++) {
+				format = format + "0";
+			}
+			format = format + "E0";
+			calc[i].df = new DecimalFormat(format);
+
+			if (sharedPreferences.getBoolean("save_checkbox", true)) {
+				/* セーブデータ取得 */
+				SharedPreferences sp = PreferenceManager
+						.getDefaultSharedPreferences(getActivity());
+
+				
+
+				mEditText.setText(calc[i].formatting(
+						sp.getString("SaveBuf" + i, "0"),
+						sp.getString("SaveResult" + i, "0"),
+						sp.getInt("SaveI" + i, 0),
+						sp.getInt("SaveCalc" + i, 0),
+						sp.getInt("SaveDig" + i, 0)));
+			}
 
 		}
 
@@ -216,7 +285,7 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 					mEditText.setText(calc[getArguments().getInt(
 							ARG_SECTION_NUMBER) - 1].figure(i));
 			}
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 5; i++) {
 				if (cal[i] == v.getId()) {
 					mEditText.setText(calc[getArguments().getInt(
 							ARG_SECTION_NUMBER) - 1].calc(i));
@@ -244,6 +313,25 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 						.show();
 				break;
 			}
+
+		}
+
+		@Override
+		public void onPause() {
+			super.onPause();
+
+			/* データセーブ */
+			SharedPreferences sp = PreferenceManager
+					.getDefaultSharedPreferences(getActivity());
+			int i = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+			sp.edit().putString("SaveBuf" + i, calc[i].buf.toPlainString())
+					.commit();
+			sp.edit()
+					.putString("SaveResult" + i, calc[i].result.toPlainString())
+					.commit();
+			sp.edit().putInt("SaveI" + i, calc[i].i).commit();
+			sp.edit().putInt("SaveCalc" + i, calc[i].calc).commit();
+			sp.edit().putInt("SaveDig" + i, calc[i].dig).commit();
 
 		}
 

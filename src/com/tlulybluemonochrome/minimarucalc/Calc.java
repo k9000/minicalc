@@ -3,10 +3,12 @@ package com.tlulybluemonochrome.minimarucalc;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 public class Calc {
-	
+
 	BigDecimal buf = BigDecimal.valueOf(0); // バッファ
 	BigDecimal result = BigDecimal.valueOf(0); // 計算結果
 	int calc = 0; // 四則演算の符号用
@@ -15,7 +17,32 @@ public class Calc {
 	TextView text; // 表示出力
 	DecimalFormat df = new DecimalFormat(".0000000000E0");
 	int sigdig;
-	
+
+	public String formatting(String savebuf, String savereselt, int savei,
+			int savecalc, int savedig) {
+		/* セーブデータ取得 */
+
+		buf = new BigDecimal(savebuf);
+		result = new BigDecimal(savereselt);
+		i = savei;
+		calc = savecalc;
+		dig = savedig;
+
+		/* 末尾0を消す */
+		buf = buf.stripTrailingZeros();
+		if (buf.doubleValue() == 0)
+			buf = BigDecimal.ZERO;
+		result = result.stripTrailingZeros();
+		if (result.doubleValue() == 0)
+			result = BigDecimal.ZERO;
+
+		if (i >= 1)
+			return buf.toPlainString();
+		else
+			return result.toPlainString();
+
+	}
+
 	/* クリア定義 */
 	public String AC() {
 		result = BigDecimal.valueOf(0);
@@ -48,39 +75,18 @@ public class Calc {
 
 		// クリック時の処理
 		/*
-		switch (v.getId()) {
-		case R.id.button1:
-			figure = BigDecimal.valueOf(1);
-			break;
-		case R.id.button2:
-			figure = BigDecimal.valueOf(2);
-			break;
-		case R.id.button3:
-			figure = BigDecimal.valueOf(3);
-			break;
-		case R.id.button4:
-			figure = BigDecimal.valueOf(4);
-			break;
-		case R.id.button5:
-			figure = BigDecimal.valueOf(5);
-			break;
-		case R.id.button6:
-			figure = BigDecimal.valueOf(6);
-			break;
-		case R.id.button7:
-			figure = BigDecimal.valueOf(7);
-			break;
-		case R.id.button8:
-			figure = BigDecimal.valueOf(8);
-			break;
-		case R.id.button9:
-			figure = BigDecimal.valueOf(9);
-			break;
-		case R.id.button0:
-			figure = BigDecimal.valueOf(0);
-			break;
-		}
-		*/
+		 * switch (v.getId()) { case R.id.button1: figure =
+		 * BigDecimal.valueOf(1); break; case R.id.button2: figure =
+		 * BigDecimal.valueOf(2); break; case R.id.button3: figure =
+		 * BigDecimal.valueOf(3); break; case R.id.button4: figure =
+		 * BigDecimal.valueOf(4); break; case R.id.button5: figure =
+		 * BigDecimal.valueOf(5); break; case R.id.button6: figure =
+		 * BigDecimal.valueOf(6); break; case R.id.button7: figure =
+		 * BigDecimal.valueOf(7); break; case R.id.button8: figure =
+		 * BigDecimal.valueOf(8); break; case R.id.button9: figure =
+		 * BigDecimal.valueOf(9); break; case R.id.button0: figure =
+		 * BigDecimal.valueOf(0); break; }
+		 */
 
 		/* 桁数制限 */
 		buf = new BigDecimal(df.format(buf));
@@ -115,7 +121,7 @@ public class Calc {
 
 	/* 演算ボタン定義 */
 	public String calc(int mcalc) {
-		
+
 		// クリック時の処理
 		if (i == -1) {
 			return "error";
@@ -163,8 +169,6 @@ public class Calc {
 		if (result.doubleValue() == 0)
 			result = BigDecimal.ZERO;
 
-		
-
 		// 演算符号の保持
 		switch (mcalc) {
 		case 1:
@@ -188,11 +192,9 @@ public class Calc {
 			i = -2;
 			break;
 		}
-		
+
 		return result.toPlainString();// 結果表示
 
 	}
-	
-	
 
 }
