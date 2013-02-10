@@ -3,9 +3,13 @@ package com.tlulybluemonochrome.minimarucalc;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Calc {
 
@@ -72,21 +76,6 @@ public class Calc {
 				calc = 0;
 		}
 		i = 1;
-
-		// クリック時の処理
-		/*
-		 * switch (v.getId()) { case R.id.button1: figure =
-		 * BigDecimal.valueOf(1); break; case R.id.button2: figure =
-		 * BigDecimal.valueOf(2); break; case R.id.button3: figure =
-		 * BigDecimal.valueOf(3); break; case R.id.button4: figure =
-		 * BigDecimal.valueOf(4); break; case R.id.button5: figure =
-		 * BigDecimal.valueOf(5); break; case R.id.button6: figure =
-		 * BigDecimal.valueOf(6); break; case R.id.button7: figure =
-		 * BigDecimal.valueOf(7); break; case R.id.button8: figure =
-		 * BigDecimal.valueOf(8); break; case R.id.button9: figure =
-		 * BigDecimal.valueOf(9); break; case R.id.button0: figure =
-		 * BigDecimal.valueOf(0); break; }
-		 */
 
 		/* 桁数制限 */
 		buf = new BigDecimal(df.format(buf));
@@ -194,6 +183,30 @@ public class Calc {
 		}
 
 		return result.toPlainString();// 結果表示
+
+	}
+
+	/* 貼り付けボタン */
+	public String paste(String paste) {
+		try {
+			buf = new BigDecimal(paste);
+		} catch (NumberFormatException e) {
+			return "error";
+		}
+
+		/* 桁数制限 */
+		buf = new BigDecimal(df.format(buf));
+
+		/* 末尾0を消す */
+		buf = buf.stripTrailingZeros();
+		if (buf.doubleValue() == 0)
+			buf = BigDecimal.ZERO;
+
+		if (i == -2)
+			calc = 0;
+
+		i = 2;
+		return buf.toPlainString();
 
 	}
 

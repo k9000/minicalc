@@ -1,10 +1,13 @@
 package com.tlulybluemonochrome.minimarucalc;
 
-
 import java.text.DecimalFormat;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -157,7 +160,8 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new DummySectionFragment(
+					getApplicationContext());
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
@@ -216,8 +220,10 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 				R.id.button_AC, R.id.button_C, R.id.button_copy,
 				R.id.button_paste };
 		int i;
+		Context context;
 
-		public DummySectionFragment() {
+		public DummySectionFragment(Context context) {
+			this.context = context;
 
 		}
 
@@ -245,12 +251,12 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
-			
+
 			int i = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
 			mEditText = (EditText) getView().findViewById(R.id.editText1);
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getActivity());
-			
+
 			/* 有効数字設定 */
 			int sigdig = sharedPreferences.getInt("significant_digit", 20) + 1;
 			String format = ".";
@@ -265,8 +271,6 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 				SharedPreferences sp = PreferenceManager
 						.getDefaultSharedPreferences(getActivity());
 
-				
-
 				mEditText.setText(calc[i].formatting(
 						sp.getString("SaveBuf" + i, "0"),
 						sp.getString("SaveResult" + i, "0"),
@@ -279,38 +283,75 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 
 		@Override
 		public void onClick(View v) {
+			int j = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
 			// TODO 自動生成されたメソッド・スタブ
 			for (int i = 0; i < fig.length; i++) {
 				if (fig[i] == v.getId())
-					mEditText.setText(calc[getArguments().getInt(
-							ARG_SECTION_NUMBER) - 1].figure(i));
+					mEditText.setText(calc[j].figure(i));
 			}
 			for (int i = 0; i < 5; i++) {
 				if (cal[i] == v.getId()) {
-					mEditText.setText(calc[getArguments().getInt(
-							ARG_SECTION_NUMBER) - 1].calc(i));
+					mEditText.setText(calc[j].calc(i));
 				}
 			}
 			switch (v.getId()) {
 			case R.id.button_dot:
-				mEditText.setText(calc[getArguments()
-						.getInt(ARG_SECTION_NUMBER) - 1].dot());
+				mEditText.setText(calc[j].dot());
 				break;
 			case R.id.button_AC:
-				mEditText.setText(calc[getArguments()
-						.getInt(ARG_SECTION_NUMBER) - 1].AC());
+				mEditText.setText(calc[j].AC());
 				break;
 			case R.id.button_C:
-				mEditText.setText(calc[getArguments()
-						.getInt(ARG_SECTION_NUMBER) - 1].C());
+				mEditText.setText(calc[j].C());
 				break;
+
 			case R.id.button_copy:
-				Toast.makeText(getActivity(), "まだ未実装です", Toast.LENGTH_SHORT)
+				// クリップボードに格納するItemを作成
+				ClipData.Item item;
+				if (calc[j].i >= 1) {
+					item = new ClipData.Item(calc[j].buf.toPlainString());
+				} else {
+					item = new ClipData.Item(calc[j].result.toPlainString());
+				}
+
+				// MIMETYPEの作成
+
+				String[] mimeType = new String[1];
+				mimeType[0] = ClipDescription.MIMETYPE_TEXT_URILIST;
+
+				// クリップボードに格納するClipDataオブジェクトの作成
+				ClipData cd = new ClipData(new ClipDescription("text_data",
+						mimeType), item);
+
+				// クリップボードにデータを格納
+
+				ClipboardManager cm = (ClipboardManager) context
+						.getSystemService(CLIPBOARD_SERVICE);
+
+				cm.setPrimaryClip(cd);
+
+				Toast.makeText(getActivity(), R.string.copy, Toast.LENGTH_SHORT)
 						.show();
 				break;
+
 			case R.id.button_paste:
-				Toast.makeText(getActivity(), "まだ未実装です", Toast.LENGTH_SHORT)
-						.show();
+				// システムのクリップボードを取得
+				ClipboardManager cm1 = (ClipboardManager) context
+						.getSystemService(CLIPBOARD_SERVICE);
+
+				// クリップボードからClipDataを取得
+				ClipData cd1 = cm1.getPrimaryClip();
+
+				// クリップデータからItemを取得
+				if (cd1 != null) {
+					ClipData.Item item1 = cd1.getItemAt(0);
+
+					mEditText.setText(calc[j].paste((String) item1.getText()));
+
+				}
+
+				Toast.makeText(getActivity(), R.string.paste,
+						Toast.LENGTH_SHORT).show();
 				break;
 			}
 
