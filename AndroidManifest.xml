@@ -39,10 +39,8 @@
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
-                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_FIGURE" />
-                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_DOT" />
-                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_CALC" />
-                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_CLEAR" />
+                <action android:name="BUTTON_CLICK_ACTION" />
+                <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_ACTION" />
             </intent-filter>
         </service>
 
