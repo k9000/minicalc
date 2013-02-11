@@ -3,14 +3,6 @@ package com.tlulybluemonochrome.minimarucalc;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 public class Calc {
 
 	BigDecimal buf = BigDecimal.valueOf(0); // バッファ
@@ -18,7 +10,6 @@ public class Calc {
 	int calc = 0; // 四則演算の符号用
 	int dig = 0; // 小数点以下の桁数保持用
 	int i = 0; // 演算ボタン用フラグ
-	TextView text; // 表示出力
 	DecimalFormat df = new DecimalFormat(".0000000000E0");
 	int sigdig;
 

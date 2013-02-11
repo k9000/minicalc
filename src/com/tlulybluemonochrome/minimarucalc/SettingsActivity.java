@@ -74,7 +74,7 @@ public class SettingsActivity extends PreferenceActivity {
 				|| sigdig != sharedPreferences.getInt("significant_digit", 20)) {
 
 			/* メイン画面起動 */
-			Intent intent = new Intent(this, (Class<?>) MainActivity.class);
+			Intent intent = new Intent(this, (Class<?>) MainCalc.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(intent);

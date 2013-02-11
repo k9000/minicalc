@@ -22,6 +22,6 @@
     <string name="title_section3">Calc 3</string>
     <string name="title_section2">Calc 2</string>
     <string name="title_section1">Calc 1</string>
-    <string name="title_activity_main_calc">MainCalc</string>
+    <string name="title_activity_main_calc">minimarucalc</string>
 
 </resources>

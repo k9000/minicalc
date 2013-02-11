@@ -170,8 +170,8 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 
 		@Override
 		public int getCount() {
-			// Show 5 total pages.
-			return 5;
+			// Show 3 total pages.
+			return 3;
 		}
 
 		@Override
@@ -206,7 +206,6 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private EditText mEditText;
-		private Button mButton;
 		private Button[] figButton = new Button[10];
 		private Button[] calcButton = new Button[10];
 		Calc[] calc = { new Calc(), new Calc(), new Calc(), new Calc(),
