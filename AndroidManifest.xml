@@ -6,26 +6,22 @@
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
-        android:debuggable="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/calc_launcher"
         android:label="@string/app_name" >
         <activity
             android:name="com.tlulybluemonochrome.minimarucalc.MainCalc"
+            android:hardwareAccelerated="true"
             android:label="@string/title_activity_main_calc" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tlulybluemonochrome.minimarucalc.MainActivity"
-            android:label="@string/app_name" >
         </activity>
 
         <receiver android:name="com.tlulybluemonochrome.minimarucalc.CalcWidget" >
@@ -41,7 +37,7 @@
         <service
             android:name="com.tlulybluemonochrome.minimarucalc.CalcService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="BUTTON_CLICK_ACTION" />
                 <action android:name="com.tlulybluemonochrome.minimarucalc.BUTTON_CLICK_ACTION" />
@@ -50,10 +46,12 @@
 
         <activity
             android:name="com.tlulybluemonochrome.minimarucalc.SettingsActivity"
+            android:hardwareAccelerated="true"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
             android:name="com.tlulybluemonochrome.minimarucalc.SeekBarPreference"
+            android:hardwareAccelerated="true"
             android:label="@string/title_activity_seek_bar_preference" >
         </activity>
     </application>

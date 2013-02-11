@@ -11,7 +11,6 @@ public class Calc {
 	int dig = 0; // 小数点以下の桁数保持用
 	int i = 0; // 演算ボタン用フラグ
 	DecimalFormat df = new DecimalFormat(".0000000000E0");
-	int sigdig;
 
 	public String formatting(String savebuf, String savereselt, int savei,
 			int savecalc, int savedig) {
@@ -36,6 +35,16 @@ public class Calc {
 		else
 			return result.toPlainString();
 
+	}
+	
+	/* 有効数字設定 */
+	public void df(int sigdig){
+		String format = ".";
+		for (int j = 0; j < sigdig; j++) {
+			format = format + "0";
+		}
+		format = format + "E0";
+		df = new DecimalFormat(format);
 	}
 
 	/* クリア定義 */

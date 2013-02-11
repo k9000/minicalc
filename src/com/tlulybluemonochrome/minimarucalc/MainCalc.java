@@ -1,8 +1,8 @@
 package com.tlulybluemonochrome.minimarucalc;
 
-import java.text.DecimalFormat;
-
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -12,10 +12,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Fragment;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,7 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainCalc extends FragmentActivity implements ActionBar.TabListener {
+public class MainCalc extends Activity implements ActionBar.TabListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -73,8 +71,7 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -176,19 +173,7 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case 0:
-				return getString(R.string.title_section1).toUpperCase();
-			case 1:
-				return getString(R.string.title_section2).toUpperCase();
-			case 2:
-				return getString(R.string.title_section3).toUpperCase();
-			case 3:
-				return getString(R.string.title_section4).toUpperCase();
-			case 4:
-				return getString(R.string.title_section5).toUpperCase();
-			}
-			return null;
+			return "CALC " + String.valueOf(position+1);
 		}
 	}
 
@@ -257,13 +242,7 @@ public class MainCalc extends FragmentActivity implements ActionBar.TabListener 
 					.getDefaultSharedPreferences(getActivity());
 
 			/* 有効数字設定 */
-			int sigdig = sharedPreferences.getInt("significant_digit", 20) + 1;
-			String format = ".";
-			for (int j = 0; j < sigdig; j++) {
-				format = format + "0";
-			}
-			format = format + "E0";
-			calc[i].df = new DecimalFormat(format);
+			calc[i].df(sharedPreferences.getInt("significant_digit", 20) + 1);
 
 			if (sharedPreferences.getBoolean("save_checkbox", true)) {
 				/* セーブデータ取得 */
